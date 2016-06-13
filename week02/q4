@@ -4,8 +4,11 @@
 mkdir -p ~public_html
 
 for file in ~/proj/html ~/proj/cgi ; do
-        if [ $file -nt ~/public_html/$file ]; then 
-                cp $file ~/public_html/$file
+        if [ COPY_ALL=1 ]; then
+                cp $file ~public_html/$file
+        else cp -u $file ~/public_html/$file
+
         fi
+
 done
  
