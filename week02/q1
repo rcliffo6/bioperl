@@ -5,4 +5,4 @@
 for i in bin etc lib share tmp; do
         mkdir $i
 done
-q1 (END) 
+
