@@ -8,4 +8,4 @@ for file in ~/proj/html ~/proj/cgi ; do
                 cp $file ~/public_html/$file
         fi
 done
-q3 (END) 
+ 
