@@ -1,0 +1,9 @@
+#! bin/sh
+
+# use a loop to copy HTML and CGI files
+mkdir -p ~public_html
+
+for file in ~/proj/html ~/proj/cgi ; do
+        cp $file ~/public_html/$file
+done
+q2 (END) 
