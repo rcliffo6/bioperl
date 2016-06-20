@@ -34,7 +34,7 @@ sub DNA_product {
       else {
          foreach (1 .. $seq_length) {
             my $nucleotide = int (rand @DNA );
-            print $OUT "DNA[$nucleotide]";
+            print $OUT "$DNA[$nucleotide]";
          }
       }
    close $OUT;
