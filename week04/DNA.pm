@@ -1,6 +1,6 @@
 package DNA;
 
-#use strict;
+use strict;
 use warnings;
 
 use Exporter 'import';
