@@ -1,0 +1,14 @@
+For question 4 regarding SQL, I created a proposed group of tables that would relate the messenger RNA
+to its tissue type, organism it was found in, possible gene name, and information regarding the start/stop
+on the chromosome of the particular organism.
+
+There are many more tables that could be added. The mRNA is a one to many table. Gene names for the
+same sequence have been changed many times. There would be a list of functions for the gene, depending
+on which tissue and which organism it is found in. The organism is part of a clade, which is then part
+of a clade, and one clade includes many organisms. Likewise, the tissue type has numerous cells which
+perform many functions, so that one cell type would be a primary key with many cell types being part 
+of the tissue. Even cell types have individual organelles, and the original mRNA sequence, probably
+found in one part of the cell, could also be transported to another organelle (i.e., created in the nucleus,
+transported to mitochondria).
+
+So this is a bare minimum for this class.
