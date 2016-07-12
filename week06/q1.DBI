@@ -1,0 +1,87 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use DBI;
+
+=pod
+
+This program will create SQLite tables to input fasta files.
+It first creates tables with input of the header, then the sequence.
+The header is placed into an empty array, and the sequence into a string.
+They are then input into the previously created SQLite tables.
+Note: I could not get Modern::Perl to input either on the .bfx or on my Mac -
+although I tried various suggestions, the problem was that I did not have
+"permission" on my computer to input modules into the cpan file. Any help would
+be appreciated.
+
+I was also unable to use AUTOINCREMENT OR FOREIGN KEY - got an error message. Perhaps it is
+not updated on .bfx either. For the same reasons (probably), 
+although I tried to add DROP TABLE IF EXISTS, this did not work, 
+and I always get a message that the tables exist. Note that I #'ed them out below.
+
+I found that when I tried to place the sequence in a string, 
+I ran out of memory, so I put each line into an array then join'ed it later, 
+which seemed to print out fine.
+=cut
+
+# Create SQLite Tables to allow input
+my $dbh = DBI -> connect("DBI:SQLite:data.dbl","","") or die "Cannot connect: $DBI::errstr";
+my $sth;
+
+# $dbh -> do (DROP TABLE IF EXISTS fasta_sequence);
+
+$dbh -> do ("CREATE TABLE fasta_sequence(gene_name VARCHAR(15) PRIMARY KEY, organism VARCHAR(50), tissue VARCHAR (255), start INT, stop INT, expression_level FLOAT, sequence TEXT)");
+
+# Open fasta file and prepare for input
+my $fasta_data = "data.fasta";
+open (DATA, $fasta_data) or die "ERROR: can't read this file: $!";
+
+# create empty array for header line input from fasta file
+# @header will contain all the header information as follows:
+# @header[0] = gene name;
+# @header[1] = organism;
+# @header[2] = tissue;
+# @header[3] = start;
+# @header[4] = stop;
+# @header[5] = expression level;
+# $flength = 70;  # length of each sequence line
+my @header = ();
+my @sequence = ();  #array of string lines to hold sequence
+my $sequence_end = "";
+my $flength = 70;
+
+
+# input header and sequence data into array
+while (my $line = <DATA>) {
+   chomp ($line);
+   if ($line =~ /^>+/) {
+      @header = split/\|/, $line;
+      $line = "";
+      print @header, "\n";
+   }
+   elsif (length($line) ==  $flength) {
+      push @sequence, $line;
+      $line = "";
+   }
+   else  {
+       $sequence_end =  $line;
+      $line = "";
+   }
+   # now that we have a sequence and its headers, arrange the one array to place data into the SQLite tables
+      my $sequence_string = join ("", @sequence);
+      $sequence_string = $sequence_string.$sequence_end;
+      $header[6] = $sequence_string;
+      print $header[6], "\n";
+
+    # prepare and execute insertion into SQLite table
+      $sth = $dbh -> prepare ("INSERT INTO fasta_sequence (gene_name, organism, tissue, start, stop, expression_level, sequence) VALUES (?,?,?,?,?,?,?)");
+      for (@header) {
+         $sth -> execute (@_);
+      }
+
+next;
+}
+
+$sth -> finish();
+$dbh -> disconnect;
