@@ -1,0 +1,7 @@
+Royces-iMac:perl_tests owner$ SQLite3 data.dbl
+SQLite version 3.8.5 2014-08-15 22:37:57
+Enter ".help" for usage hints.
+sqlite> .schema
+CREATE TABLE fasta_sequence(gene_name VARCHAR(15) PRIMARY KEY, organism VARCHAR(50), tissue VARCHAR (255), start INT, stop INT, expression_level FLOAT, sequence TEXT);
+CREATE TABLE organism (organism_ID INTEGER NOT NULL PRIMARY KEY, organism_name VARCHAR(255), clade VARCHAR(255));
+CREATE TABLE tissue (tissue_ID INTEGER NOT NULL PRIMARY KEY, tissue_name VARCHAR(255), tissue_function VARCHAR(255));
